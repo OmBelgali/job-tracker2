@@ -1,0 +1,158 @@
+/**
+ * Job Notification Tracker — App shell
+ * Top nav, placeholder pages, responsive hamburger.
+ * KodNest Premium Build System.
+ */
+
+/* ——— App header & nav ——— */
+.kn-app-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--kn-space-sm) var(--kn-space-lg);
+  border-bottom: var(--kn-border);
+  background: var(--kn-bg);
+}
+
+.kn-app-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--kn-space-md);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kn-app-nav a {
+  color: var(--kn-text);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  padding: var(--kn-space-xs) 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--kn-transition-duration) var(--kn-transition-ease),
+              color var(--kn-transition-duration) var(--kn-transition-ease);
+}
+
+.kn-app-nav a:hover {
+  color: var(--kn-accent);
+}
+
+.kn-app-nav a.active {
+  color: var(--kn-accent);
+  border-bottom-color: var(--kn-accent);
+}
+
+/* Hamburger trigger (hidden on desktop) */
+.kn-app-nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: var(--kn-border);
+  border-radius: var(--kn-radius);
+  background: var(--kn-bg);
+  color: var(--kn-text);
+  cursor: pointer;
+  transition: border-color var(--kn-transition-duration) var(--kn-transition-ease);
+}
+
+.kn-app-nav-toggle:hover {
+  border-color: var(--kn-accent);
+}
+
+.kn-app-nav-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  position: relative;
+}
+
+.kn-app-nav-toggle span::before,
+.kn-app-nav-toggle span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+}
+
+.kn-app-nav-toggle span::before {
+  top: -6px;
+}
+
+.kn-app-nav-toggle span::after {
+  top: 6px;
+}
+
+/* ——— Placeholder page ——— */
+.kn-app-main {
+  padding: var(--kn-space-xl) var(--kn-space-lg);
+  max-width: var(--kn-body-max-width);
+  margin: 0 auto;
+}
+
+.kn-app-main .kn-heading {
+  margin-bottom: var(--kn-space-xs);
+}
+
+.kn-app-main .kn-subtext {
+  margin-bottom: 0;
+  opacity: 0.8;
+}
+
+/* ——— Responsive: hamburger menu ——— */
+@media (max-width: 768px) {
+  .kn-app-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .kn-app-nav-toggle {
+    display: flex;
+  }
+
+  .kn-app-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--kn-space-sm);
+    background: var(--kn-bg);
+    border-bottom: var(--kn-border);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height var(--kn-transition-duration) var(--kn-transition-ease),
+                opacity var(--kn-transition-duration) var(--kn-transition-ease);
+  }
+
+  .kn-app-header[data-nav-open] .kn-app-nav {
+    max-height: 320px;
+    opacity: 1;
+  }
+
+  .kn-app-nav li {
+    width: 100%;
+  }
+
+  .kn-app-nav a {
+    display: block;
+    padding: var(--kn-space-sm);
+    border-bottom: none;
+    border-left: 3px solid transparent;
+  }
+
+  .kn-app-nav a.active {
+    border-left-color: var(--kn-accent);
+  }
+}
