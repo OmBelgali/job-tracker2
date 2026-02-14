@@ -21,14 +21,79 @@
     </nav>
   </header>
 
-  <main class="kn-app-main">
+  <main class="kn-app-main kn-app-main--wide">
     <h1 class="kn-heading kn-heading-xl">Dashboard</h1>
-    <div class="kn-empty">
-      <p class="kn-empty__title">No jobs yet</p>
-      <p class="kn-empty__message">In the next step, you will load a realistic dataset.</p>
+
+    <div class="kn-filter-bar">
+      <div class="kn-field">
+        <label class="kn-field__label" for="filter-keyword">Keyword</label>
+        <input type="search" id="filter-keyword" class="kn-input" placeholder="Title or company" aria-label="Search by title or company">
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="filter-location">Location</label>
+        <select id="filter-location" class="kn-select" aria-label="Filter by location">
+          <option value="">All locations</option>
+        </select>
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="filter-mode">Mode</label>
+        <select id="filter-mode" class="kn-select" aria-label="Filter by mode">
+          <option value="">All</option>
+          <option value="Remote">Remote</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="Onsite">Onsite</option>
+        </select>
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="filter-experience">Experience</label>
+        <select id="filter-experience" class="kn-select" aria-label="Filter by experience">
+          <option value="">All</option>
+          <option value="Fresher">Fresher</option>
+          <option value="0-1">0-1</option>
+          <option value="1-3">1-3</option>
+          <option value="3-5">3-5</option>
+        </select>
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="filter-source">Source</label>
+        <select id="filter-source" class="kn-select" aria-label="Filter by source">
+          <option value="">All</option>
+          <option value="LinkedIn">LinkedIn</option>
+          <option value="Naukri">Naukri</option>
+          <option value="Indeed">Indeed</option>
+        </select>
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="filter-sort">Sort</label>
+        <select id="filter-sort" class="kn-select" aria-label="Sort order">
+          <option value="latest">Latest</option>
+          <option value="oldest">Oldest</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="job-grid" class="kn-job-grid" role="list"></div>
+
+    <div id="empty-state" class="kn-empty" role="status" hidden>
+      <p class="kn-empty__title">No jobs match</p>
+      <p class="kn-empty__message">Try adjusting filters or keyword search.</p>
     </div>
   </main>
 
+  <div id="job-modal" class="kn-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="kn-modal">
+      <h2 id="modal-title" class="kn-modal__title"></h2>
+      <p class="kn-modal__company"></p>
+      <p class="kn-modal__description"></p>
+      <div class="kn-modal__skills"></div>
+      <div class="kn-modal__close">
+        <button type="button" class="kn-btn kn-btn--secondary" id="modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jobs-data.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>

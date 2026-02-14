@@ -21,14 +21,31 @@
     </nav>
   </header>
 
-  <main class="kn-app-main">
+  <main class="kn-app-main kn-app-main--wide">
     <h1 class="kn-heading kn-heading-xl">Saved</h1>
-    <div class="kn-empty">
+
+    <div id="saved-empty" class="kn-empty" role="status">
       <p class="kn-empty__title">Nothing saved yet</p>
-      <p class="kn-empty__message">Jobs you save will appear here. Set your preferences in Settings to get started.</p>
+      <p class="kn-empty__message">Jobs you save from the Dashboard will appear here. Set your preferences in Settings to get started.</p>
     </div>
+
+    <div id="saved-grid" class="kn-job-grid" role="list" hidden></div>
   </main>
 
+  <div id="job-modal" class="kn-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="kn-modal">
+      <h2 id="modal-title" class="kn-modal__title"></h2>
+      <p class="kn-modal__company"></p>
+      <p class="kn-modal__description"></p>
+      <div class="kn-modal__skills"></div>
+      <div class="kn-modal__close">
+        <button type="button" class="kn-btn kn-btn--secondary" id="modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jobs-data.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/saved.js"></script>
 </body>
 </html>
