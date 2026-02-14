@@ -23,7 +23,38 @@
 
   <main class="kn-app-main">
     <h1 class="kn-heading kn-heading-xl">Settings</h1>
-    <p class="kn-subtext">This section will be built in the next step.</p>
+    <p class="kn-subtext">Set your preferences. Logic will be added in a later step.</p>
+
+    <form class="kn-settings-form" action="#" method="get" aria-label="Preferences">
+      <div class="kn-field">
+        <label class="kn-field__label" for="role-keywords">Role keywords</label>
+        <input type="text" id="role-keywords" class="kn-input" name="role-keywords" placeholder="e.g. Frontend, React, TypeScript">
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="locations">Preferred locations</label>
+        <input type="text" id="locations" class="kn-input" name="locations" placeholder="e.g. New York, Remote, London">
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="mode">Mode</label>
+        <select id="mode" class="kn-select" name="mode" aria-label="Work mode">
+          <option value="">Select mode</option>
+          <option value="remote">Remote</option>
+          <option value="hybrid">Hybrid</option>
+          <option value="onsite">Onsite</option>
+        </select>
+      </div>
+      <div class="kn-field">
+        <label class="kn-field__label" for="experience">Experience level</label>
+        <select id="experience" class="kn-select" name="experience" aria-label="Experience level">
+          <option value="">Select level</option>
+          <option value="intern">Intern</option>
+          <option value="junior">Junior</option>
+          <option value="mid">Mid</option>
+          <option value="senior">Senior</option>
+          <option value="lead">Lead</option>
+        </select>
+      </div>
+    </form>
   </main>
 
   <script src="js/app.js"></script>

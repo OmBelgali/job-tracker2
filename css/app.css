@@ -106,6 +106,81 @@
   opacity: 0.8;
 }
 
+/* ——— Landing hero ——— */
+.kn-landing {
+  text-align: center;
+  padding: var(--kn-space-xl) var(--kn-space-lg);
+}
+
+.kn-landing__headline {
+  font-family: var(--kn-font-serif);
+  font-size: 2.5rem;
+  line-height: 1.2;
+  letter-spacing: var(--kn-heading-spacing);
+  font-weight: 600;
+  margin: 0 0 var(--kn-space-sm) 0;
+  max-width: var(--kn-body-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kn-landing__subtext {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  opacity: 0.85;
+  margin: 0 0 var(--kn-space-lg) 0;
+  max-width: var(--kn-body-max-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.kn-landing__cta {
+  margin-top: var(--kn-space-md);
+}
+
+/* ——— Settings form (placeholder fields) ——— */
+.kn-settings-form {
+  max-width: 480px;
+}
+
+.kn-field {
+  margin-bottom: var(--kn-space-md);
+}
+
+.kn-field__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: var(--kn-space-xs);
+  color: var(--kn-text);
+}
+
+.kn-field .kn-input,
+.kn-field select {
+  width: 100%;
+}
+
+.kn-select {
+  padding: var(--kn-space-xs) var(--kn-space-sm);
+  font-family: var(--kn-font-sans);
+  font-size: 0.9375rem;
+  color: var(--kn-text);
+  background: var(--kn-bg);
+  border: var(--kn-border);
+  border-radius: var(--kn-radius);
+  cursor: pointer;
+  transition: border-color var(--kn-transition-duration) var(--kn-transition-ease);
+}
+
+.kn-select:focus {
+  outline: none;
+  border-color: var(--kn-accent);
+}
+
+.kn-app-main .kn-empty {
+  padding: var(--kn-space-xl) var(--kn-space-sm);
+}
+
 /* ——— Responsive: hamburger menu ——— */
 @media (max-width: 768px) {
   .kn-app-header {
