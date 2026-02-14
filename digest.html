@@ -23,12 +23,44 @@
 
   <main class="kn-app-main">
     <h1 class="kn-heading kn-heading-xl">Digest</h1>
-    <div class="kn-empty">
-      <p class="kn-empty__title">No digest yet</p>
-      <p class="kn-empty__message">Your daily digest will appear here once you have preferences and matches. Delivered at 9AM.</p>
+
+    <div id="digest-block" class="kn-digest-block" role="alert" hidden>
+      <p class="kn-digest-block__message">Set preferences to generate a personalized digest.</p>
+      <a href="settings.html" class="kn-btn kn-btn--primary">Go to Settings</a>
+    </div>
+
+    <div id="digest-zone" hidden>
+      <p class="kn-digest-note">Demo Mode: Daily 9AM trigger simulated manually.</p>
+      <button type="button" id="digest-generate" class="kn-btn kn-btn--primary">Generate Today's 9AM Digest (Simulated)</button>
+
+      <div id="digest-no-matches" class="kn-empty" role="status" hidden>
+        <p class="kn-empty__title">No matching roles today</p>
+        <p class="kn-empty__message">Check again tomorrow.</p>
+      </div>
+
+      <div id="digest-card-wrap" class="kn-digest-card-wrap" hidden>
+        <article id="digest-card" class="kn-digest-card" aria-label="Today's digest">
+          <header class="kn-digest-card__header">
+            <h2 class="kn-digest-card__title">Top 10 Jobs For You — 9AM Digest</h2>
+            <p class="kn-digest-card__date" id="digest-date"></p>
+          </header>
+          <ul id="digest-list" class="kn-digest-list" role="list"></ul>
+          <footer class="kn-digest-card__footer">
+            This digest was generated based on your preferences.
+          </footer>
+        </article>
+        <div class="kn-digest-actions">
+          <button type="button" id="digest-copy" class="kn-btn kn-btn--secondary">Copy Digest to Clipboard</button>
+          <a id="digest-mailto" href="#" class="kn-btn kn-btn--secondary">Create Email Draft</a>
+        </div>
+      </div>
     </div>
   </main>
 
+  <script src="js/jobs-data.js"></script>
+  <script src="js/preferences.js"></script>
+  <script src="js/digest.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/digest-page.js"></script>
 </body>
 </html>
