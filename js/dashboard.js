@@ -1,9 +1,11 @@
 /**
- * Job Notification Tracker — Dashboard: filter, render cards, modal, save, apply
+ * Job Notification Tracker — Dashboard: filter, match score, threshold, sort, render
  */
 
 (function () {
   var SAVED_KEY = 'job-tracker-saved';
+  var KEYWORD_DEBOUNCE_MS = 300;
+  var keywordDebounceTimer = null;
 
   function getSavedIds() {
     try {
@@ -36,7 +38,13 @@
     return Object.keys(set).sort();
   }
 
-  function filterAndSortJobs(jobs, filters) {
+  function extractSalaryNumber(salaryRange) {
+    if (!salaryRange || typeof salaryRange !== 'string') return 0;
+    var m = salaryRange.match(/\d+/);
+    return m ? parseInt(m[0], 10) : 0;
+  }
+
+  function filterAndSortJobs(jobs, filters, prefs, withScores) {
     var list = jobs.slice();
 
     if (filters.keyword) {
@@ -59,28 +67,50 @@
       list = list.filter(function (j) { return j.source === filters.source; });
     }
 
+    if (typeof computeMatchScore === 'function' && prefs) {
+      list.forEach(function (j) {
+        j._matchScore = computeMatchScore(j, prefs);
+      });
+    } else {
+      list.forEach(function (j) { j._matchScore = 0; });
+    }
+
+    if (filters.aboveThreshold && prefs && typeof prefs.minMatchScore === 'number') {
+      list = list.filter(function (j) { return j._matchScore >= prefs.minMatchScore; });
+    }
+
     if (filters.sort === 'oldest') {
       list.sort(function (a, b) { return (b.postedDaysAgo || 0) - (a.postedDaysAgo || 0); });
+    } else if (filters.sort === 'match') {
+      list.sort(function (a, b) { return (b._matchScore || 0) - (a._matchScore || 0); });
+    } else if (filters.sort === 'salary') {
+      list.sort(function (a, b) {
+        return extractSalaryNumber(b.salaryRange) - extractSalaryNumber(a.salaryRange);
+      });
     } else {
       list.sort(function (a, b) { return (a.postedDaysAgo || 0) - (b.postedDaysAgo || 0); });
     }
     return list;
   }
 
-  function renderCard(job, savedIds, onView, onSave, onApply) {
+  function renderCard(job, savedIds, onView, onSave) {
     var card = document.createElement('article');
     card.className = 'kn-job-card';
     card.setAttribute('data-job-id', job.id);
     card.setAttribute('role', 'listitem');
 
     var isSaved = savedIds.indexOf(job.id) !== -1;
+    var score = job._matchScore != null ? job._matchScore : 0;
+    var badgeClass = typeof getMatchBadgeClass === 'function' ? getMatchBadgeClass(score) : 'kn-match--neutral';
 
     card.innerHTML =
       '<h3 class="kn-job-card__title">' + escapeHtml(job.title) + '</h3>' +
       '<p class="kn-job-card__company">' + escapeHtml(job.company) + '</p>' +
       '<p class="kn-job-card__meta">' + escapeHtml(job.location || '') + ' · ' + escapeHtml(job.mode || '') + ' · ' + escapeHtml(job.experience || '') + '</p>' +
       '<p class="kn-job-card__salary">' + escapeHtml(job.salaryRange || '') + '</p>' +
-      '<p class="kn-job-card__meta">' + escapeHtml(formatPosted(job.postedDaysAgo != null ? job.postedDaysAgo : 0)) + ' <span class="kn-job-card__badge">' + escapeHtml(job.source || '') + '</span></p>' +
+      '<p class="kn-job-card__meta">' +
+        '<span class="kn-job-card__match ' + badgeClass + '">' + score + '% match</span> ' +
+        escapeHtml(formatPosted(job.postedDaysAgo != null ? job.postedDaysAgo : 0)) + ' <span class="kn-job-card__badge">' + escapeHtml(job.source || '') + '</span></p>' +
       '<div class="kn-job-card__footer">' +
         '<button type="button" class="kn-btn kn-btn--secondary kn-job-view">View</button>' +
         '<button type="button" class="kn-btn kn-btn--secondary kn-job-save" data-saved="' + (isSaved ? '1' : '0') + '">' + (isSaved ? 'Saved' : 'Save') + '</button>' +
@@ -117,14 +147,10 @@
 
   function openModal(job) {
     var overlay = document.getElementById('job-modal');
-    var titleEl = overlay.querySelector('#modal-title');
-    var companyEl = overlay.querySelector('.kn-modal__company');
-    var descEl = overlay.querySelector('.kn-modal__description');
+    overlay.querySelector('#modal-title').textContent = job.title || '';
+    overlay.querySelector('.kn-modal__company').textContent = job.company || '';
+    overlay.querySelector('.kn-modal__description').textContent = job.description || '';
     var skillsEl = overlay.querySelector('.kn-modal__skills');
-
-    titleEl.textContent = job.title || '';
-    companyEl.textContent = job.company || '';
-    descEl.textContent = job.description || '';
     skillsEl.innerHTML = '';
     if (job.skills && job.skills.length) {
       job.skills.forEach(function (s) {
@@ -146,12 +172,14 @@
 
     var gridEl = document.getElementById('job-grid');
     var emptyEl = document.getElementById('empty-state');
+    var bannerEl = document.getElementById('prefs-banner');
     var locationSelect = document.getElementById('filter-location');
     var keywordInput = document.getElementById('filter-keyword');
     var modeSelect = document.getElementById('filter-mode');
     var experienceSelect = document.getElementById('filter-experience');
     var sourceSelect = document.getElementById('filter-source');
     var sortSelect = document.getElementById('filter-sort');
+    var thresholdCheck = document.getElementById('filter-threshold');
 
     var locations = getUniqueLocations(jobs);
     locations.forEach(function (loc) {
@@ -162,15 +190,22 @@
     });
 
     function applyFilters() {
+      var prefs = typeof getPreferences === 'function' ? getPreferences() : null;
+      if (bannerEl) {
+        bannerEl.hidden = !!prefs;
+      }
+
       var filters = {
-        keyword: keywordInput.value,
-        location: locationSelect.value,
-        mode: modeSelect.value,
-        experience: experienceSelect.value,
-        source: sourceSelect.value,
-        sort: sortSelect.value
+        keyword: keywordInput ? keywordInput.value : '',
+        location: locationSelect ? locationSelect.value : '',
+        mode: modeSelect ? modeSelect.value : '',
+        experience: experienceSelect ? experienceSelect.value : '',
+        source: sourceSelect ? sourceSelect.value : '',
+        sort: sortSelect ? sortSelect.value : 'latest',
+        aboveThreshold: thresholdCheck ? thresholdCheck.checked : false
       };
-      var list = filterAndSortJobs(jobs, filters);
+
+      var list = filterAndSortJobs(jobs, filters, prefs, true);
       var savedIds = getSavedIds();
 
       gridEl.innerHTML = '';
@@ -179,17 +214,25 @@
       } else {
         emptyEl.hidden = true;
         list.forEach(function (job) {
-          gridEl.appendChild(renderCard(job, savedIds, openModal, saveJobId, function (url) { window.open(url, '_blank'); }));
+          gridEl.appendChild(renderCard(job, savedIds, openModal, saveJobId));
         });
       }
     }
 
-    keywordInput.addEventListener('input', applyFilters);
-    locationSelect.addEventListener('change', applyFilters);
-    modeSelect.addEventListener('change', applyFilters);
-    experienceSelect.addEventListener('change', applyFilters);
-    sourceSelect.addEventListener('change', applyFilters);
-    sortSelect.addEventListener('change', applyFilters);
+    function debouncedApply() {
+      if (keywordDebounceTimer) clearTimeout(keywordDebounceTimer);
+      keywordDebounceTimer = setTimeout(applyFilters, KEYWORD_DEBOUNCE_MS);
+    }
+
+    if (keywordInput) {
+      keywordInput.addEventListener('input', debouncedApply);
+    }
+    if (locationSelect) locationSelect.addEventListener('change', applyFilters);
+    if (modeSelect) modeSelect.addEventListener('change', applyFilters);
+    if (experienceSelect) experienceSelect.addEventListener('change', applyFilters);
+    if (sourceSelect) sourceSelect.addEventListener('change', applyFilters);
+    if (sortSelect) sortSelect.addEventListener('change', applyFilters);
+    if (thresholdCheck) thresholdCheck.addEventListener('change', applyFilters);
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
     document.getElementById('job-modal').addEventListener('click', function (e) {

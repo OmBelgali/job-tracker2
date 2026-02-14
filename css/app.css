@@ -177,6 +177,114 @@
   border-color: var(--kn-accent);
 }
 
+.kn-select--multi {
+  min-height: 80px;
+}
+
+.kn-field__hint {
+  display: block;
+  font-size: 0.8125rem;
+  margin-top: var(--kn-space-xs);
+  opacity: 0.75;
+}
+
+.kn-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--kn-space-md);
+}
+
+.kn-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--kn-space-xs);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.kn-checkbox input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--kn-accent);
+  cursor: pointer;
+}
+
+.kn-slider {
+  width: 100%;
+  max-width: 280px;
+  height: 8px;
+  accent-color: var(--kn-accent);
+  cursor: pointer;
+}
+
+.kn-banner {
+  padding: var(--kn-space-sm) var(--kn-space-md);
+  margin-bottom: var(--kn-space-md);
+  border-radius: var(--kn-radius);
+  border: var(--kn-border);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.kn-banner--info {
+  background: rgba(17, 17, 17, 0.04);
+  color: var(--kn-text);
+}
+
+.kn-threshold-bar {
+  margin-bottom: var(--kn-space-md);
+}
+
+.kn-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: var(--kn-space-sm);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.kn-toggle {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--kn-accent);
+  cursor: pointer;
+}
+
+.kn-job-card__match {
+  display: inline-block;
+  padding: 2px var(--kn-space-xs);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+  margin-right: var(--kn-space-xs);
+}
+
+.kn-match--high {
+  border: 1px solid var(--kn-success);
+  background: rgba(74, 93, 74, 0.12);
+  color: var(--kn-success);
+}
+
+.kn-match--medium {
+  border: 1px solid var(--kn-warning);
+  background: rgba(139, 115, 85, 0.12);
+  color: var(--kn-warning);
+}
+
+.kn-match--neutral {
+  border: var(--kn-border);
+  background: var(--kn-bg);
+  color: var(--kn-text);
+  opacity: 0.9;
+}
+
+.kn-match--low {
+  border: var(--kn-border);
+  background: rgba(17, 17, 17, 0.04);
+  color: var(--kn-text);
+  opacity: 0.6;
+}
+
 .kn-app-main .kn-empty {
   padding: var(--kn-space-xl) var(--kn-space-sm);
 }

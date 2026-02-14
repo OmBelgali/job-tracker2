@@ -24,6 +24,10 @@
   <main class="kn-app-main kn-app-main--wide">
     <h1 class="kn-heading kn-heading-xl">Dashboard</h1>
 
+    <div id="prefs-banner" class="kn-banner kn-banner--info" role="status" hidden>
+      Set your preferences to activate intelligent matching.
+    </div>
+
     <div class="kn-filter-bar">
       <div class="kn-field">
         <label class="kn-field__label" for="filter-keyword">Keyword</label>
@@ -68,15 +72,24 @@
         <select id="filter-sort" class="kn-select" aria-label="Sort order">
           <option value="latest">Latest</option>
           <option value="oldest">Oldest</option>
+          <option value="match">Match Score</option>
+          <option value="salary">Salary</option>
         </select>
       </div>
+    </div>
+
+    <div class="kn-threshold-bar">
+      <label class="kn-toggle-label">
+        <input type="checkbox" id="filter-threshold" class="kn-toggle" aria-label="Show only jobs above my threshold">
+        <span>Show only jobs above my threshold</span>
+      </label>
     </div>
 
     <div id="job-grid" class="kn-job-grid" role="list"></div>
 
     <div id="empty-state" class="kn-empty" role="status" hidden>
-      <p class="kn-empty__title">No jobs match</p>
-      <p class="kn-empty__message">Try adjusting filters or keyword search.</p>
+      <p class="kn-empty__title">No roles match your criteria</p>
+      <p class="kn-empty__message">Adjust filters or lower threshold.</p>
     </div>
   </main>
 
@@ -93,6 +106,7 @@
   </div>
 
   <script src="js/jobs-data.js"></script>
+  <script src="js/preferences.js"></script>
   <script src="js/app.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
