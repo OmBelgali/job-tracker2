@@ -1,0 +1,66 @@
+/**
+ * KodNest Premium Build System — Base & Typography
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--kn-bg);
+  color: var(--kn-text);
+  font-family: var(--kn-font-sans);
+  font-size: var(--kn-body-size);
+  line-height: var(--kn-body-line);
+}
+
+/* Headings — serif, large, confident, generous spacing */
+h1, h2, .kn-heading {
+  font-family: var(--kn-font-serif);
+  font-size: var(--kn-heading-size);
+  line-height: var(--kn-heading-line);
+  letter-spacing: var(--kn-heading-spacing);
+  font-weight: 600;
+  margin: 0 0 var(--kn-space-sm) 0;
+}
+
+.kn-heading-xl {
+  font-size: 2.5rem;
+  margin-bottom: var(--kn-space-md);
+}
+
+/* Body text — max width for readability */
+.kn-text-block {
+  max-width: var(--kn-body-max-width);
+  margin: 0 0 var(--kn-space-sm) 0;
+}
+
+.kn-subtext {
+  font-size: 1rem;
+  color: var(--kn-text);
+  opacity: 0.85;
+  margin: 0 0 var(--kn-space-md) 0;
+}
+
+a {
+  color: var(--kn-accent);
+  text-decoration: none;
+  transition: opacity var(--kn-transition-duration) var(--kn-transition-ease);
+}
+
+a:hover {
+  opacity: 0.85;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--kn-accent);
+  outline-offset: 2px;
+}

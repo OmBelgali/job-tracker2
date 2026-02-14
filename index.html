@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KodNest Premium Build System — Design System</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- Top Bar -->
+  <header class="kn-topbar">
+    <span class="kn-topbar__project">KodNest</span>
+    <span class="kn-topbar__progress">Step 1 / 4</span>
+    <span class="kn-topbar__status">
+      <span class="kn-badge kn-badge--progress">In Progress</span>
+    </span>
+  </header>
+
+  <!-- Context Header -->
+  <section class="kn-context-header">
+    <h1 class="kn-heading kn-heading-xl">Design system overview</h1>
+    <p class="kn-subtext">Layout, components, and states. No product features.</p>
+  </section>
+
+  <!-- Main: Workspace (70%) + Panel (30%) -->
+  <main class="kn-main">
+    <div class="kn-workspace">
+      <div class="kn-card">
+        <h2 class="kn-heading">Primary workspace</h2>
+        <p class="kn-text-block">Main product interaction lives here. Clean cards, predictable components, no crowding.</p>
+      </div>
+      <div class="kn-card">
+        <h2 class="kn-heading">Buttons</h2>
+        <p class="kn-text-block" style="margin-bottom: 16px;">Primary and secondary. Same hover and radius.</p>
+        <button type="button" class="kn-btn kn-btn--primary">Primary action</button>
+        <button type="button" class="kn-btn kn-btn--secondary" style="margin-left: 8px;">Secondary</button>
+      </div>
+      <div class="kn-card">
+        <h2 class="kn-heading">Inputs</h2>
+        <input type="text" class="kn-input" placeholder="Clean border, clear focus" style="max-width: 320px; margin-bottom: 8px;">
+        <textarea class="kn-textarea" placeholder="Textarea, same rules" style="max-width: 320px;" rows="3"></textarea>
+      </div>
+      <div class="kn-card">
+        <h2 class="kn-heading">Empty state</h2>
+        <div class="kn-empty">
+          <p class="kn-empty__title">Nothing here yet</p>
+          <p class="kn-empty__message">Use the action below to add your first item. No dead ends.</p>
+          <div class="kn-empty__action">
+            <button type="button" class="kn-btn kn-btn--primary">Add first item</button>
+          </div>
+        </div>
+      </div>
+      <div class="kn-card">
+        <h2 class="kn-heading">Error state</h2>
+        <div class="kn-error">
+          <p class="kn-error__title">Something went wrong</p>
+          <p class="kn-error__message">The request timed out. The service may be busy.</p>
+          <p class="kn-error__fix">Try again in a few seconds, or refresh the page. If it continues, check your connection.</p>
+          <div class="kn-error__action">
+            <button type="button" class="kn-btn kn-btn--primary">Try again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="kn-panel">
+      <p class="kn-panel__title">Step explanation</p>
+      <p class="kn-text-block" style="font-size: 0.9375rem;">Short step description. Calm, no hype.</p>
+      <div class="kn-panel__copyable">
+        <p class="kn-panel__title">Copyable prompt</p>
+        <div class="kn-copy-box">
+          <code>Prompt or snippet text goes here. User can copy.</code>
+          <div class="kn-copy-box__actions" style="margin-top: 8px;">
+            <button type="button" class="kn-btn kn-btn--secondary">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="kn-panel__actions">
+        <button type="button" class="kn-btn kn-btn--primary">Build in Lovable</button>
+        <button type="button" class="kn-btn kn-btn--secondary">It Worked</button>
+        <button type="button" class="kn-btn kn-btn--secondary">Error</button>
+        <button type="button" class="kn-btn kn-btn--secondary">Add Screenshot</button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Proof Footer -->
+  <footer class="kn-proof-footer">
+    <p class="kn-proof-footer__title">Proof</p>
+    <ul class="kn-proof-checklist">
+      <li><input type="checkbox" id="p1" aria-label="UI Built"><label for="p1">UI Built</label></li>
+      <li><input type="checkbox" id="p2" aria-label="Logic Working"><label for="p2">Logic Working</label></li>
+      <li><input type="checkbox" id="p3" aria-label="Test Passed"><label for="p3">Test Passed</label></li>
+      <li><input type="checkbox" id="p4" aria-label="Deployed"><label for="p4">Deployed</label></li>
+    </ul>
+  </footer>
+
+  <script>
+    document.querySelector('.kn-copy-box .kn-btn').addEventListener('click', function () {
+      var code = document.querySelector('.kn-copy-box code');
+      if (code) {
+        navigator.clipboard.writeText(code.textContent);
+        this.textContent = 'Copied';
+        var t = this;
+        setTimeout(function () { t.textContent = 'Copy'; }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>
