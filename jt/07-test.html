@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Checklist — Job Notification Tracker</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/app.css">
+</head>
+<body>
+  <header class="kn-app-header">
+    <button type="button" class="kn-app-nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    <nav>
+      <ul class="kn-app-nav">
+        <li><a href="../dashboard.html">Dashboard</a></li>
+        <li><a href="../saved.html">Saved</a></li>
+        <li><a href="../digest.html">Digest</a></li>
+        <li><a href="../settings.html">Settings</a></li>
+        <li><a href="../proof.html">Proof</a></li>
+        <li><a href="07-test.html" class="active">Test</a></li>
+        <li><a href="08-ship.html">Ship</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="kn-app-main">
+    <h1 class="kn-heading kn-heading-xl">Test Checklist</h1>
+
+    <div class="kn-test-summary" id="test-summary">
+      <p class="kn-test-summary__count">Tests Passed: <strong id="test-passed-count">0</strong> / 10</p>
+      <p id="test-ship-warning" class="kn-test-summary__warning" hidden>Resolve all issues before shipping.</p>
+    </div>
+
+    <ul class="kn-test-list" id="test-list" role="list">
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="0" aria-label="Preferences persist after refresh">
+          <span>Preferences persist after refresh</span>
+        </label>
+        <span class="kn-test-item__tip" title="Save preferences in Settings, refresh page, confirm form is still filled.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="1" aria-label="Match score calculates correctly">
+          <span>Match score calculates correctly</span>
+        </label>
+        <span class="kn-test-item__tip" title="Set role keywords in Settings and check Dashboard cards show match %.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="2" aria-label="Show only matches toggle works">
+          <span>"Show only matches" toggle works</span>
+        </label>
+        <span class="kn-test-item__tip" title="Enable the toggle on Dashboard; only jobs above your threshold should show.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="3" aria-label="Save job persists after refresh">
+          <span>Save job persists after refresh</span>
+        </label>
+        <span class="kn-test-item__tip" title="Save a job from Dashboard, go to Saved, refresh; job should still be listed.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="4" aria-label="Apply opens in new tab">
+          <span>Apply opens in new tab</span>
+        </label>
+        <span class="kn-test-item__tip" title="Click Apply on a job card; the link should open in a new tab.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="5" aria-label="Status update persists after refresh">
+          <span>Status update persists after refresh</span>
+        </label>
+        <span class="kn-test-item__tip" title="Change a job status to Applied/Rejected/Selected, refresh; status should be unchanged.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="6" aria-label="Status filter works correctly">
+          <span>Status filter works correctly</span>
+        </label>
+        <span class="kn-test-item__tip" title="On Dashboard, filter by Applied, Rejected, or Selected; only jobs with that status should show.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="7" aria-label="Digest generates top 10 by score">
+          <span>Digest generates top 10 by score</span>
+        </label>
+        <span class="kn-test-item__tip" title="Generate today's digest; the list should be top 10 jobs by match score.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="8" aria-label="Digest persists for the day">
+          <span>Digest persists for the day</span>
+        </label>
+        <span class="kn-test-item__tip" title="Generate digest, refresh the Digest page; the same digest should appear without regenerating.">How to test</span>
+      </li>
+      <li class="kn-test-item">
+        <label class="kn-test-item__label">
+          <input type="checkbox" class="kn-test-item__cb" data-index="9" aria-label="No console errors on main pages">
+          <span>No console errors on main pages</span>
+        </label>
+        <span class="kn-test-item__tip" title="Open Dashboard, Saved, Digest, Settings; DevTools console should show no errors.">How to test</span>
+      </li>
+    </ul>
+
+    <div class="kn-test-actions">
+      <button type="button" id="test-reset" class="kn-btn kn-btn--secondary">Reset Test Status</button>
+    </div>
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/test-checklist.js"></script>
+</body>
+</html>

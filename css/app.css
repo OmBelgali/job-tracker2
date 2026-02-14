@@ -552,6 +552,85 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* ——— Test checklist ——— */
+.kn-test-summary {
+  margin-bottom: var(--kn-space-md);
+  padding: var(--kn-space-sm) 0;
+  border-bottom: var(--kn-border);
+}
+
+.kn-test-summary__count {
+  margin: 0 0 var(--kn-space-xs) 0;
+  font-size: 1rem;
+}
+
+.kn-test-summary__warning {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--kn-warning);
+}
+
+.kn-test-list {
+  list-style: none;
+  margin: 0 0 var(--kn-space-md) 0;
+  padding: 0;
+}
+
+.kn-test-item {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--kn-space-xs);
+  padding: var(--kn-space-sm) 0;
+  border-bottom: var(--kn-border);
+}
+
+.kn-test-item:last-child {
+  border-bottom: none;
+}
+
+.kn-test-item__label {
+  display: flex;
+  align-items: center;
+  gap: var(--kn-space-xs);
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.kn-test-item__label input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--kn-accent);
+  cursor: pointer;
+}
+
+.kn-test-item__tip {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  cursor: help;
+  border-bottom: 1px dotted currentColor;
+}
+
+.kn-test-actions {
+  margin-top: var(--kn-space-md);
+}
+
+/* ——— Ship lock ——— */
+.kn-ship-lock {
+  padding: var(--kn-space-lg) 0;
+  text-align: center;
+}
+
+.kn-ship-lock__message {
+  margin: 0 0 var(--kn-space-md) 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.kn-ship-success {
+  padding: var(--kn-space-lg) 0;
+}
+
 /* ——— Dashboard: wider main for cards ——— */
 .kn-app-main--wide {
   max-width: 960px;
