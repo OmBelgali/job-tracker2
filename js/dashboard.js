@@ -66,6 +66,9 @@
     if (filters.source) {
       list = list.filter(function (j) { return j.source === filters.source; });
     }
+    if (filters.status && typeof getJobStatus === 'function') {
+      list = list.filter(function (j) { return getJobStatus(j.id) === filters.status; });
+    }
 
     if (typeof computeMatchScore === 'function' && prefs) {
       list.forEach(function (j) {
@@ -93,6 +96,43 @@
     return list;
   }
 
+  function getStatusClass(status) {
+    if (status === 'Applied') return 'kn-status--applied';
+    if (status === 'Rejected') return 'kn-status--rejected';
+    if (status === 'Selected') return 'kn-status--selected';
+    return 'kn-status--not-applied';
+  }
+
+  function renderStatusGroup(job, card) {
+    var statuses = ['Not Applied', 'Applied', 'Rejected', 'Selected'];
+    var current = typeof getJobStatus === 'function' ? getJobStatus(job.id) : 'Not Applied';
+    var wrap = document.createElement('div');
+    wrap.className = 'kn-status-group';
+    wrap.setAttribute('role', 'group');
+    wrap.setAttribute('aria-label', 'Job status');
+    statuses.forEach(function (s) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'kn-status-btn ' + (s === current ? getStatusClass(s) : '');
+      btn.textContent = s;
+      btn.setAttribute('data-status', s);
+      if (s === current) btn.setAttribute('aria-pressed', 'true');
+      btn.addEventListener('click', function () {
+        if (typeof setJobStatus === 'function') setJobStatus(job.id, s);
+        wrap.querySelectorAll('.kn-status-btn').forEach(function (b) {
+          b.className = 'kn-status-btn' + (b.getAttribute('data-status') === s ? ' ' + getStatusClass(s) : '');
+          b.setAttribute('aria-pressed', b.getAttribute('data-status') === s ? 'true' : 'false');
+        });
+        if (s === 'Applied' || s === 'Rejected' || s === 'Selected') {
+          if (typeof pushStatusUpdate === 'function') pushStatusUpdate(job.id, job.title, job.company, s);
+          if (typeof showToast === 'function') showToast('Status updated: ' + s);
+        }
+      });
+      wrap.appendChild(btn);
+    });
+    return wrap;
+  }
+
   function renderCard(job, savedIds, onView, onSave) {
     var card = document.createElement('article');
     card.className = 'kn-job-card';
@@ -102,6 +142,7 @@
     var isSaved = savedIds.indexOf(job.id) !== -1;
     var score = job._matchScore != null ? job._matchScore : 0;
     var badgeClass = typeof getMatchBadgeClass === 'function' ? getMatchBadgeClass(score) : 'kn-match--neutral';
+    var currentStatus = typeof getJobStatus === 'function' ? getJobStatus(job.id) : 'Not Applied';
 
     card.innerHTML =
       '<h3 class="kn-job-card__title">' + escapeHtml(job.title) + '</h3>' +
@@ -110,12 +151,17 @@
       '<p class="kn-job-card__salary">' + escapeHtml(job.salaryRange || '') + '</p>' +
       '<p class="kn-job-card__meta">' +
         '<span class="kn-job-card__match ' + badgeClass + '">' + score + '% match</span> ' +
+        '<span class="kn-status-badge ' + getStatusClass(currentStatus) + '">' + escapeHtml(currentStatus) + '</span> ' +
         escapeHtml(formatPosted(job.postedDaysAgo != null ? job.postedDaysAgo : 0)) + ' <span class="kn-job-card__badge">' + escapeHtml(job.source || '') + '</span></p>' +
+      '<div class="kn-status-group-wrap"></div>' +
       '<div class="kn-job-card__footer">' +
         '<button type="button" class="kn-btn kn-btn--secondary kn-job-view">View</button>' +
         '<button type="button" class="kn-btn kn-btn--secondary kn-job-save" data-saved="' + (isSaved ? '1' : '0') + '">' + (isSaved ? 'Saved' : 'Save') + '</button>' +
         '<a href="' + escapeAttr(job.applyUrl || '#') + '" class="kn-btn kn-btn--primary" target="_blank" rel="noopener">Apply</a>' +
       '</div>';
+
+    var groupWrap = card.querySelector('.kn-status-group-wrap');
+    groupWrap.appendChild(renderStatusGroup(job, card));
 
     var viewBtn = card.querySelector('.kn-job-view');
     var saveBtn = card.querySelector('.kn-job-save');
@@ -195,12 +241,14 @@
         bannerEl.hidden = !!prefs;
       }
 
+      var statusSelect = document.getElementById('filter-status');
       var filters = {
         keyword: keywordInput ? keywordInput.value : '',
         location: locationSelect ? locationSelect.value : '',
         mode: modeSelect ? modeSelect.value : '',
         experience: experienceSelect ? experienceSelect.value : '',
         source: sourceSelect ? sourceSelect.value : '',
+        status: statusSelect ? statusSelect.value : '',
         sort: sortSelect ? sortSelect.value : 'latest',
         aboveThreshold: thresholdCheck ? thresholdCheck.checked : false
       };
@@ -231,6 +279,8 @@
     if (modeSelect) modeSelect.addEventListener('change', applyFilters);
     if (experienceSelect) experienceSelect.addEventListener('change', applyFilters);
     if (sourceSelect) sourceSelect.addEventListener('change', applyFilters);
+    var statusSelect = document.getElementById('filter-status');
+    if (statusSelect) statusSelect.addEventListener('change', applyFilters);
     if (sortSelect) sortSelect.addEventListener('change', applyFilters);
     if (thresholdCheck) thresholdCheck.addEventListener('change', applyFilters);
 

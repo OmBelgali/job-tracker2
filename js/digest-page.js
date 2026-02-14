@@ -18,6 +18,41 @@
     return isNaN(d.getTime()) ? dateKey : d.toDateString();
   }
 
+  function formatStatusDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso);
+    return isNaN(d.getTime()) ? iso : d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function getStatusClass(status) {
+    if (status === 'Applied') return 'kn-status--applied';
+    if (status === 'Rejected') return 'kn-status--rejected';
+    if (status === 'Selected') return 'kn-status--selected';
+    return 'kn-status--not-applied';
+  }
+
+  function renderStatusUpdates() {
+    var section = document.getElementById('status-updates-section');
+    var listEl = document.getElementById('status-updates-list');
+    if (!section || !listEl) return;
+    var updates = typeof getStatusUpdates === 'function' ? getStatusUpdates() : [];
+    listEl.innerHTML = '';
+    if (!updates.length) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+    updates.forEach(function (u) {
+      var li = document.createElement('li');
+      li.className = 'kn-status-updates__item';
+      li.innerHTML =
+        '<span class="kn-status-updates__job">' + escapeHtml(u.title) + ' — ' + escapeHtml(u.company) + '</span>' +
+        ' <span class="kn-status-badge ' + getStatusClass(u.status) + '">' + escapeHtml(u.status) + '</span>' +
+        ' <span class="kn-status-updates__date">' + escapeHtml(formatStatusDate(u.dateChanged)) + '</span>';
+      listEl.appendChild(li);
+    });
+  }
+
   function renderDigest(digest, dateKey) {
     var wrap = document.getElementById('digest-card-wrap');
     var listEl = document.getElementById('digest-list');
@@ -66,6 +101,7 @@
     };
 
     mailtoLink.href = getMailtoLink(digest, dateLabel);
+    renderStatusUpdates();
   }
 
   function run() {
@@ -82,6 +118,7 @@
 
     blockEl.hidden = true;
     zoneEl.hidden = false;
+    renderStatusUpdates();
 
     generateBtn.addEventListener('click', function () {
       var todayKey = getTodayKey();

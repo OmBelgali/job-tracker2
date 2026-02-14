@@ -39,6 +39,43 @@
     return div.innerHTML.replace(/"/g, '&quot;');
   }
 
+  function getStatusClass(status) {
+    if (status === 'Applied') return 'kn-status--applied';
+    if (status === 'Rejected') return 'kn-status--rejected';
+    if (status === 'Selected') return 'kn-status--selected';
+    return 'kn-status--not-applied';
+  }
+
+  function renderStatusGroup(job, card) {
+    var statuses = ['Not Applied', 'Applied', 'Rejected', 'Selected'];
+    var current = typeof getJobStatus === 'function' ? getJobStatus(job.id) : 'Not Applied';
+    var wrap = document.createElement('div');
+    wrap.className = 'kn-status-group';
+    wrap.setAttribute('role', 'group');
+    wrap.setAttribute('aria-label', 'Job status');
+    statuses.forEach(function (s) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'kn-status-btn' + (s === current ? ' ' + getStatusClass(s) : '');
+      btn.textContent = s;
+      btn.setAttribute('data-status', s);
+      if (s === current) btn.setAttribute('aria-pressed', 'true');
+      btn.addEventListener('click', function () {
+        if (typeof setJobStatus === 'function') setJobStatus(job.id, s);
+        wrap.querySelectorAll('.kn-status-btn').forEach(function (b) {
+          b.className = 'kn-status-btn' + (b.getAttribute('data-status') === s ? ' ' + getStatusClass(s) : '');
+          b.setAttribute('aria-pressed', b.getAttribute('data-status') === s ? 'true' : 'false');
+        });
+        if (s === 'Applied' || s === 'Rejected' || s === 'Selected') {
+          if (typeof pushStatusUpdate === 'function') pushStatusUpdate(job.id, job.title, job.company, s);
+          if (typeof showToast === 'function') showToast('Status updated: ' + s);
+        }
+      });
+      wrap.appendChild(btn);
+    });
+    return wrap;
+  }
+
   function openModal(job) {
     var overlay = document.getElementById('job-modal');
     overlay.querySelector('#modal-title').textContent = job.title || '';
@@ -66,17 +103,28 @@
     card.setAttribute('data-job-id', job.id);
     card.setAttribute('role', 'listitem');
 
+    var currentStatus = typeof getJobStatus === 'function' ? getJobStatus(job.id) : 'Not Applied';
+
     card.innerHTML =
       '<h3 class="kn-job-card__title">' + escapeHtml(job.title) + '</h3>' +
       '<p class="kn-job-card__company">' + escapeHtml(job.company) + '</p>' +
       '<p class="kn-job-card__meta">' + escapeHtml(job.location || '') + ' · ' + escapeHtml(job.mode || '') + ' · ' + escapeHtml(job.experience || '') + '</p>' +
       '<p class="kn-job-card__salary">' + escapeHtml(job.salaryRange || '') + '</p>' +
-      '<p class="kn-job-card__meta">' + escapeHtml(formatPosted(job.postedDaysAgo != null ? job.postedDaysAgo : 0)) + ' <span class="kn-job-card__badge">' + escapeHtml(job.source || '') + '</span></p>' +
+      '<p class="kn-job-card__meta">' +
+        '<span class="kn-status-badge ' + getStatusClass(currentStatus) + '">' + escapeHtml(currentStatus) + '</span> ' +
+        escapeHtml(formatPosted(job.postedDaysAgo != null ? job.postedDaysAgo : 0)) + ' <span class="kn-job-card__badge">' + escapeHtml(job.source || '') + '</span></p>' +
+      '<div class="kn-status-group-wrap"></div>' +
       '<div class="kn-job-card__footer">' +
         '<button type="button" class="kn-btn kn-btn--secondary kn-job-view">View</button>' +
         '<button type="button" class="kn-btn kn-btn--secondary kn-job-remove">Remove</button>' +
-        '<a href="' + escapeAttr(job.applyUrl || '#') + '" class="kn-btn kn-btn--primary" target="_blank" rel="noopener">Apply</a>' +
+        '<a href="#" class="kn-btn kn-btn--primary kn-job-apply" target="_blank" rel="noopener">Apply</a>' +
       '</div>';
+
+    var applyLink = card.querySelector('.kn-job-apply');
+    if (applyLink) applyLink.href = job.applyUrl || '#';
+
+    var groupWrap = card.querySelector('.kn-status-group-wrap');
+    groupWrap.appendChild(renderStatusGroup(job, card));
 
     card.querySelector('.kn-job-view').addEventListener('click', function () { onView(job); });
     card.querySelector('.kn-job-remove').addEventListener('click', function () {
