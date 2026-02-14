@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proof — Job Notification Tracker</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/app.css">
+</head>
+<body>
+  <header class="kn-app-header">
+    <button type="button" class="kn-app-nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span></button>
+    <nav>
+      <ul class="kn-app-nav">
+        <li><a href="../dashboard.html">Dashboard</a></li>
+        <li><a href="../saved.html">Saved</a></li>
+        <li><a href="../digest.html">Digest</a></li>
+        <li><a href="../settings.html">Settings</a></li>
+        <li><a href="proof.html" class="active">Proof</a></li>
+        <li><a href="07-test.html">Test</a></li>
+        <li><a href="08-ship.html">Ship</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="kn-app-main">
+    <h1 class="kn-heading kn-heading-xl">Project 1 — Job Notification Tracker</h1>
+
+    <div class="kn-proof-status-bar">
+      <span class="kn-proof-status-label">Status:</span>
+      <span id="proof-status-badge" class="kn-proof-status-badge kn-proof-status--not-started">Not Started</span>
+    </div>
+
+    <section class="kn-proof-section" aria-labelledby="step-summary-heading">
+      <h2 id="step-summary-heading" class="kn-proof-section__title">A) Step Completion Summary</h2>
+      <ul id="proof-steps" class="kn-proof-steps" role="list"></ul>
+    </section>
+
+    <section class="kn-proof-section" aria-labelledby="artifacts-heading">
+      <h2 id="artifacts-heading" class="kn-proof-section__title">B) Artifact Collection Inputs</h2>
+      <form id="proof-form" class="kn-proof-form">
+        <div class="kn-field">
+          <label class="kn-field__label" for="proof-lovable">Lovable Project Link</label>
+          <input type="url" id="proof-lovable" class="kn-input" placeholder="https://..." autocomplete="url">
+          <span id="proof-lovable-error" class="kn-proof-error" role="alert" hidden>Enter a valid URL (https://...)</span>
+        </div>
+        <div class="kn-field">
+          <label class="kn-field__label" for="proof-github">GitHub Repository Link</label>
+          <input type="url" id="proof-github" class="kn-input" placeholder="https://github.com/..." autocomplete="url">
+          <span id="proof-github-error" class="kn-proof-error" role="alert" hidden>Enter a valid URL (https://...)</span>
+        </div>
+        <div class="kn-field">
+          <label class="kn-field__label" for="proof-deployed">Deployed URL (Vercel or equivalent)</label>
+          <input type="url" id="proof-deployed" class="kn-input" placeholder="https://..." autocomplete="url">
+          <span id="proof-deployed-error" class="kn-proof-error" role="alert" hidden>Enter a valid URL (https://...)</span>
+        </div>
+      </form>
+    </section>
+
+    <div class="kn-proof-actions">
+      <button type="button" id="proof-copy-submission" class="kn-btn kn-btn--primary">Copy Final Submission</button>
+    </div>
+  </main>
+
+  <script src="../js/test-checklist.js"></script>
+  <script src="../js/proof-artifacts.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/proof-page.js"></script>
+</body>
+</html>

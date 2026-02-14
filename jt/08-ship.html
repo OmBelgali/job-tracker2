@@ -16,7 +16,7 @@
         <li><a href="../saved.html">Saved</a></li>
         <li><a href="../digest.html">Digest</a></li>
         <li><a href="../settings.html">Settings</a></li>
-        <li><a href="../proof.html">Proof</a></li>
+        <li><a href="proof.html">Proof</a></li>
         <li><a href="07-test.html">Test</a></li>
         <li><a href="08-ship.html" class="active">Ship</a></li>
       </ul>
@@ -29,23 +29,40 @@
       <p class="kn-ship-lock__message">Complete all 10 test checklist items before shipping.</p>
       <a href="07-test.html" class="kn-btn kn-btn--primary">Go to Test Checklist</a>
     </div>
+    <div id="ship-progress" class="kn-ship-progress" hidden>
+      <h1 class="kn-heading kn-heading-xl">Almost there</h1>
+      <p class="kn-ship-lock__message">All tests passed. Add your proof links (Lovable, GitHub, Deployed URL) to unlock Ship.</p>
+      <a href="proof.html" class="kn-btn kn-btn--primary">Go to Proof</a>
+    </div>
     <div id="ship-success" class="kn-ship-success" hidden>
-      <h1 class="kn-heading kn-heading-xl">Ready to ship</h1>
-      <p class="kn-subtext">All tests passed. You can proceed to ship.</p>
+      <p class="kn-proof-status-badge kn-proof-status--shipped" style="margin-bottom: 16px;">Shipped</p>
+      <h1 class="kn-heading kn-heading-xl">Project 1 Shipped Successfully.</h1>
+      <p class="kn-subtext">All conditions met. No confetti. Calm confirmation.</p>
     </div>
   </main>
 
   <script src="../js/app.js"></script>
   <script src="../js/test-checklist.js"></script>
+  <script src="../js/proof-artifacts.js"></script>
   <script>
     (function () {
       var lockEl = document.getElementById('ship-lock');
+      var progressEl = document.getElementById('ship-progress');
       var successEl = document.getElementById('ship-success');
-      if (typeof allTestsPassed === 'function' && allTestsPassed()) {
+      var testsOk = typeof allTestsPassed === 'function' && allTestsPassed();
+      var linksOk = typeof allProofLinksProvided === 'function' && allProofLinksProvided();
+
+      if (testsOk && linksOk) {
         if (lockEl) lockEl.hidden = true;
+        if (progressEl) progressEl.hidden = true;
         if (successEl) successEl.hidden = false;
+      } else if (testsOk && !linksOk) {
+        if (lockEl) lockEl.hidden = true;
+        if (progressEl) progressEl.hidden = false;
+        if (successEl) successEl.hidden = true;
       } else {
         if (lockEl) lockEl.hidden = false;
+        if (progressEl) progressEl.hidden = true;
         if (successEl) successEl.hidden = true;
       }
     })();

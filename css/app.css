@@ -631,6 +631,93 @@
   padding: var(--kn-space-lg) 0;
 }
 
+.kn-ship-progress {
+  padding: var(--kn-space-lg) 0;
+  text-align: center;
+}
+
+/* ——— Proof page: status, steps, artifacts ——— */
+.kn-proof-status-bar {
+  margin-bottom: var(--kn-space-md);
+  padding-bottom: var(--kn-space-sm);
+  border-bottom: var(--kn-border);
+}
+
+.kn-proof-status-label {
+  font-size: 0.875rem;
+  margin-right: var(--kn-space-xs);
+}
+
+.kn-proof-status-badge {
+  display: inline-block;
+  padding: var(--kn-space-xs) var(--kn-space-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--kn-radius);
+  border: var(--kn-border);
+}
+
+.kn-proof-status--not-started {
+  background: rgba(17, 17, 17, 0.04);
+  color: var(--kn-text);
+  opacity: 0.8;
+}
+
+.kn-proof-status--progress {
+  border-color: var(--kn-warning);
+  background: rgba(139, 115, 85, 0.08);
+  color: var(--kn-warning);
+}
+
+.kn-proof-status--shipped {
+  border-color: var(--kn-success);
+  background: rgba(74, 93, 74, 0.12);
+  color: var(--kn-success);
+}
+
+.kn-proof-section {
+  margin-bottom: var(--kn-space-lg);
+}
+
+.kn-proof-section__title {
+  font-family: var(--kn-font-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 var(--kn-space-sm) 0;
+}
+
+.kn-proof-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kn-proof-step {
+  padding: var(--kn-space-xs) 0;
+  font-size: 0.9375rem;
+}
+
+.kn-proof-step__status {
+  display: inline-block;
+  min-width: 88px;
+  font-weight: 500;
+}
+
+.kn-proof-form {
+  max-width: 480px;
+}
+
+.kn-proof-error {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--kn-accent);
+  margin-top: var(--kn-space-xs);
+}
+
+.kn-proof-actions {
+  margin-top: var(--kn-space-md);
+}
+
 /* ——— Dashboard: wider main for cards ——— */
 .kn-app-main--wide {
   max-width: 960px;
